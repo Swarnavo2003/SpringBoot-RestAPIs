@@ -5,6 +5,7 @@ import com.LearningRestAPI.StudentManagement.entity.Student;
 import com.LearningRestAPI.StudentManagement.repository.StudentRepository;
 import com.LearningRestAPI.StudentManagement.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<StudentDto> getAllStudents() {
@@ -21,6 +23,13 @@ public class StudentServiceImpl implements StudentService {
 
         return students
                 .stream()
-                .map(student -> new StudentDto(student.getId(),student.getName(),student.getEmail())).toList();
+                .map(student -> modelMapper.map(student,StudentDto.class))
+                .toList();
+    }
+
+    @Override
+    public StudentDto getStudentById(long id) {
+        Student student =  studentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Student not found with ID:"+id));
+        return modelMapper.map(student, StudentDto.class);
     }
 }
