@@ -3,6 +3,7 @@ package com.LearningRestAPI.StudentManagement.controller;
 import com.LearningRestAPI.StudentManagement.dto.AddStudentRequestDto;
 import com.LearningRestAPI.StudentManagement.dto.StudentDto;
 import com.LearningRestAPI.StudentManagement.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDto> createNewStudent(@RequestBody AddStudentRequestDto addStudentRequestDto) {
+    public ResponseEntity<StudentDto> createNewStudent(@RequestBody @Valid AddStudentRequestDto addStudentRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.createNewStudent(addStudentRequestDto));
     }
 
